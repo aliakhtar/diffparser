@@ -1,0 +1,17 @@
+
+diff --git a/app/services/contacts_service.rb b/app/services/contacts_service.rb
+index e939e3c..55fdee9 100644
+--- a/app/services/contacts_service.rb
++++ b/app/services/contacts_service.rb
+@@ -30,9 +30,9 @@ class ContactsService < BaseService
+
+     return set_error 'Please search for at least 3 characters' unless name.length >= 3
+
+-    @principal.connections.joins(:contact_infos)
++    @principal.connections.joins(:node)
+       .where.not(conn_type: Connection::TYPE_INCOMING)
+-      .where('contact_infos.first LIKE ?', "%#{name}%")
++      .where('contact_infos.first ILIKE ?', "%#{name}%")
+       .paginate(page: @params[:page])
+   end
+
