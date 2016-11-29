@@ -15,6 +15,7 @@
  */
 package org.wickedsource.diffparser.unified;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,11 +89,13 @@ public enum ParserState {
         @Override
         public ParserState nextState(ParseWindow window) {
             String line = window.getFocusLine();
+            if (line != null)
+                line = line.trim();
             if (matchesHunkStartPattern(line)) {
                 logTransition(line, TO_FILE, HUNK_START);
                 return HUNK_START;
             } else {
-                throw new IllegalStateException("A TO_FILE line ('+++') must be directly followed by a HUNK_START line ('@@')!");
+                throw new IllegalStateException("A TO_FILE line ('+++') must be directly followed by a HUNK_START line ('@@')!:" + line );
             }
         }
     },
@@ -252,7 +255,7 @@ public enum ParserState {
     }
 
     protected boolean matchesHunkStartPattern(String line) {
-        return line.startsWith("@@") && line.endsWith("@@");
+        return line.startsWith("@@") && StringUtils.countMatches(line, "@@") == 2;
     }
 
     protected boolean matchesEndPattern(String line, ParseWindow window) {
