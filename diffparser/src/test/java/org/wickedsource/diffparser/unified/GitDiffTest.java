@@ -14,11 +14,25 @@ public class GitDiffTest
     private final Logger log = Logger.getLogger( this.toString() );
 
     @Test
-    public void testParse() throws Exception
+    public void testParse1() throws Exception
     {
         // given
         DiffParser parser = new UnifiedDiffParser();
         InputStream in = getClass().getResourceAsStream("git.diff");
+
+        // when
+        List<Diff> diffs = parser.parse(in);
+
+        log.info("Diffs: " + diffs.toString());
+    }
+
+    @Test
+    public void testParse2() throws Exception
+    {
+
+        // given
+        DiffParser parser = new UnifiedDiffParser();
+        InputStream in = getClass().getResourceAsStream("git2.diff");
 
         // when
         List<Diff> diffs = parser.parse(in);
