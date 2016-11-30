@@ -1,0 +1,17 @@
+diff --git a/Foo.java b/Foo.java
+new file mode 100644
+index 0000000..a66196f
+--- /dev/null
++++ b/Foo.java
+@@ -0,0 +1,10 @@
++package test;
++
++
++public class Foo
++{
++    public long square(long number)
++    {
++        return number * number + 1 + 1;
++    }
++}
+\ No newline at end of file

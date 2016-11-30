@@ -115,6 +115,41 @@ public class GitDiffTest
         assertEquals(NEUTRAL, lines.get(5).getLineType());
     }
 
+    @Test
+    public void testDiff3Parse() throws Exception
+    {
+        // given
+        DiffParser parser = new UnifiedDiffParser();
+        InputStream in = getClass().getResourceAsStream("git3.diff");
+
+        // when
+        List<Diff> diffs = parser.parse(in);
+
+        // then
+        assertNotNull(diffs);
+        assertEquals(1, diffs.size());
+
+        Diff diff = diffs.get(0);
+        assertEquals("/dev/null", diff.getFromFileName());
+        assertEquals("b/Foo.java", diff.getToFileName());
+        assertEquals(1, diff.getHunks().size());
+
+        List<String> headerLines = diff.getHeaderLines();
+        assertEquals( headerLines.toString(), 3, headerLines.size());
+
+        Hunk hunk1 = diff.getHunks().get(0);
+        validateHunk(hunk1, 0, 0, 1, 10);
+
+        List<Line> lines = hunk1.getLines();
+        assertEquals(lines.toString(),11, lines.size());
+
+        for (Line l : lines)
+        {
+            if (! l.getContent().equals("\\ No newline at end of file"))
+                assertEquals(TO, l.getLineType());
+        }
+    }
+
     private void validateHunk(Hunk hunk, int fromLineStart, int fromLineCount, int toLineStart, int toLineCount)
     {
         assertEquals(fromLineStart, hunk.getFromFileRange().getLineStart());
