@@ -13,4 +13,3 @@ index e939e3c..55fdee9 100644
 +      .where('contact_infos.first ILIKE ?', "%#{name}%")
        .paginate(page: @params[:page])
    end
-

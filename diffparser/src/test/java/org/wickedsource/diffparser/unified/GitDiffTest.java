@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static org.wickedsource.diffparser.api.model.Line.LineType.*;
 
 public class GitDiffTest
 {
@@ -49,9 +50,18 @@ public class GitDiffTest
         List<Line> lines = hunk1.getLines();
         assertEquals(10, lines.size());
 
-        assertEquals(Line.LineType.TO, lines.get(3).getLineType());
-        assertEquals(Line.LineType.FROM, lines.get(7).getLineType());
-        assertEquals(Line.LineType.TO, lines.get(8).getLineType());
+
+        assertEquals(FROM, lines.get(3).getLineType());
+        assertEquals(TO, lines.get(4).getLineType());
+
+        assertEquals(FROM, lines.get(6).getLineType());
+        assertEquals(TO, lines.get(7).getLineType());
+
+        assertEquals(NEUTRAL, lines.get(0).getLineType() );
+        assertEquals(NEUTRAL, lines.get(1).getLineType() );
+        assertEquals(NEUTRAL, lines.get(2).getLineType() );
+        assertEquals(NEUTRAL, lines.get(8).getLineType() );
+        assertEquals(NEUTRAL, lines.get(9).getLineType() );
     }
 
     @Test
