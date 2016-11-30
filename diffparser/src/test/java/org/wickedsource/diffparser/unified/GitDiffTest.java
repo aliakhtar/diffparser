@@ -4,10 +4,15 @@ import org.junit.Test;
 import org.wickedsource.diffparser.api.DiffParser;
 import org.wickedsource.diffparser.api.UnifiedDiffParser;
 import org.wickedsource.diffparser.api.model.Diff;
+import org.wickedsource.diffparser.api.model.Hunk;
+import org.wickedsource.diffparser.api.model.Line;
 
 import java.io.InputStream;
 import java.util.List;
 import java.util.logging.Logger;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 public class GitDiffTest
 {
@@ -23,7 +28,30 @@ public class GitDiffTest
         // when
         List<Diff> diffs = parser.parse(in);
 
-        log.info("Diffs: " + diffs.toString());
+        // then
+        assertNotNull(diffs);
+        assertEquals(1, diffs.size());
+
+        Diff diff = diffs.get(0);
+        assertEquals("a/app/services/contacts_service.rb", diff.getFromFileName());
+        assertEquals("b/app/services/contacts_service.rb", diff.getToFileName());
+        assertEquals(1, diff.getHunks().size());
+
+        List<String> headerLines = diff.getHeaderLines();
+        assertEquals( headerLines.toString(), 2, headerLines.size());
+
+        Hunk hunk1 = diff.getHunks().get(0);
+        assertEquals(30, hunk1.getFromFileRange().getLineStart());
+        assertEquals(9, hunk1.getFromFileRange().getLineCount());
+        assertEquals(30, hunk1.getToFileRange().getLineStart());
+        assertEquals(9, hunk1.getToFileRange().getLineCount());
+
+        List<Line> lines = hunk1.getLines();
+        assertEquals(10, lines.size());
+
+        assertEquals(Line.LineType.TO, lines.get(3).getLineType());
+        assertEquals(Line.LineType.FROM, lines.get(7).getLineType());
+        assertEquals(Line.LineType.TO, lines.get(8).getLineType());
     }
 
     @Test

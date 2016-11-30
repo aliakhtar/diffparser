@@ -1,4 +1,3 @@
-
 diff --git a/app/services/contacts_service.rb b/app/services/contacts_service.rb
 index e939e3c..55fdee9 100644
 --- a/app/services/contacts_service.rb
